@@ -112,8 +112,6 @@ restorer.restore(sess, './checkpoints/ckpt_deq_lin_hal_ref/model.ckpt')
 
 tester = Tester()
 
-if not os.path.exists(ARGS.output_path):
-    os.makedirs(ARGS.output_path)
-
 def get_hdr_image(image):
-    tester.test_it(image)
+    image = tester.test_it(image)
+    return image
