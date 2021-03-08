@@ -168,7 +168,7 @@ class CrfFeatureNet(BaseNet):
         pool5 = self.avg_pool(res3b_relu, 7, 7, 1, 1, padding='VALID', name='pool5')
         # fc11      = self.fc(tf.contrib.layers.flatten(pool5), 11, relu=False, name='fc11')
 
-        return tf.reduce_mean(res3b_relu, [1, 2], keep_dims=False)
+        return tf.reduce_mean(res3b_relu, [1, 2], keepdims=False)
 
     def overwrite_init(self, sess):
 
@@ -408,7 +408,7 @@ class Linearization_net(AggNet):
         g = rf[:, 1:] - rf[:, :-1]
         # [b, 1023]
 
-        min_g = tf.reduce_min(g, axis=-1, keep_dims=True)
+        min_g = tf.reduce_min(g, axis=-1, keepdims=True)
         # [b, 1]
 
         # r = tf.nn.relu(1e-6 - min_g)
@@ -418,7 +418,7 @@ class Linearization_net(AggNet):
         new_g = g + r
         # [b, 1023]
 
-        new_g = new_g / tf.reduce_sum(new_g, axis=-1, keep_dims=True)
+        new_g = new_g / tf.reduce_sum(new_g, axis=-1, keepdims=True)
         # [b, 1023]
 
         new_rf = tf.cumsum(new_g, axis=-1)
