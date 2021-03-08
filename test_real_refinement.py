@@ -8,7 +8,7 @@ from .dequantization_net import Dequantization_net
 from .linearization_net import Linearization_net
 from .hallucination_net import *
 from .refinement_net import Refinement_net
-from util import apply_rf
+from .util import apply_rf
 import numpy as np
 import cv2
 import glob
