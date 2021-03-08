@@ -48,7 +48,7 @@ class CrfFeatureNet(BaseNet):
             name,
             relu=False,
     ):
-        with tf.variable_scope(name) as scope:
+        with tf.compat.v1.variable_scope(name) as scope:
             output = slim.batch_norm(
                 input,
                 scale=True,
