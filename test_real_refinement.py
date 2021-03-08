@@ -108,10 +108,12 @@ class Tester:
 
 sess = tf.Session()
 restorer = tf.train.Saver()
-restorer.restore(sess, './checkpoints/ckpt_deq_lin_hal_ref/model.ckpt')
+restorer.restore(sess, '/datadrive/weights/SingleHDR/ckpt_deq_lin_hal_ref/model.ckpt')
 
-tester = Tester()
+class HDR:
+    def __init__(self):
+        self.tester = Tester()
 
-def get_hdr_image(image):
-    image = tester.test_it(image)
-    return image
+    def get_hdr_image(self,image):
+        image = self.tester.test_it(image)
+        return image
