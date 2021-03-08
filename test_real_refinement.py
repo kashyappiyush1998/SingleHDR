@@ -13,7 +13,7 @@ import numpy as np
 import cv2
 import glob
 
-FLAGS = tf.app.flags.FLAGS
+FLAGS = tf.compat.v1.flags.FLAGS
 epsilon = 0.001
 # ---
 
