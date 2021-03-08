@@ -60,8 +60,8 @@ def build_graph(
 
     return refinement_output
 
-ldr = tf.placeholder(tf.float32, [None, None, None, 3])
-is_training = tf.placeholder(tf.bool)
+ldr = tf.compat.v1.placeholder(tf.float32, [None, None, None, 3])
+is_training = tf.compat.v1.placeholder(tf.bool)
 
 HDR_out = build_graph(ldr, is_training)
 
