@@ -18,15 +18,15 @@ class Dequantization_net(object):
         return tf.reduce_mean(tf.square(predictions - targets))
 
     def down(self, x, outChannels, filterSize):
-        x = tf.layers.average_pooling2d(x, 2, 2)
-        x = tf.nn.leaky_relu(tf.layers.conv2d(x, outChannels, filterSize, 1, 'same'), 0.1)
-        x = tf.nn.leaky_relu(tf.layers.conv2d(x, outChannels, filterSize, 1, 'same'), 0.1)
+        x = tf.compat.v1.layers.average_pooling2d(x, 2, 2)
+        x = tf.compat.v1.nn.leaky_relu(tf.compat.v1.layers.conv2d(x, outChannels, filterSize, 1, 'same'), 0.1)
+        x = tf.compat.v1.nn.leaky_relu(tf.compat.v1.layers.conv2d(x, outChannels, filterSize, 1, 'same'), 0.1)
         return x
 
     def up(self, x, outChannels, skpCn):
-        x = tf.image.resize_bilinear(x, 2*tf.shape(x)[1:3])
-        x = tf.nn.leaky_relu(tf.layers.conv2d(x, outChannels, 3, 1, 'same'), 0.1)
-        x = tf.nn.leaky_relu(tf.layers.conv2d(tf.concat([x, skpCn], -1), outChannels, 3, 1, 'same'), 0.1)
+        x = tf.compat.v1.image.resize_bilinear(x, 2*tf.shape(x)[1:3])
+        x = tf.compat.v1.nn.leaky_relu(tf.compat.v1.layers.conv2d(x, outChannels, 3, 1, 'same'), 0.1)
+        x = tf.compat.v1.nn.leaky_relu(tf.compat.v1.layers.conv2d(tf.concat([x, skpCn], -1), outChannels, 3, 1, 'same'), 0.1)
         return x
 
     def _build_model(self, input_images):
@@ -43,6 +43,6 @@ class Dequantization_net(object):
         x = self.up(x, 64, s3)
         x = self.up(x, 32, s2)
         x = self.up(x, 16, s1)
-        x = tf.nn.tanh(tf.layers.conv2d(x, 3, 3, 1, 'same'))
+        x = tf.nn.tanh(tf.compat.v1.layers.conv2d(x, 3, 3, 1, 'same'))
         output = input_images + x
         return output
