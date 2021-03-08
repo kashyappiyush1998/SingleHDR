@@ -35,7 +35,7 @@ def build_graph(
         ldr,  # [b, h, w, c]
         is_training,
 ):
-    with tf.variable_scope("Dequantization_Net"):
+    with tf.compat.v1.variable_scope("Dequantization_Net"):
         dequantization_model = Dequantization_net(is_train=is_training)
         C_pred = _clip(dequantization_model.inference(ldr))
 
@@ -48,14 +48,14 @@ def build_graph(
     alpha = tf.minimum(1.0, tf.maximum(0.0, alpha - 1.0 + thr) / thr)
     alpha = tf.reshape(alpha, [-1, tf.shape(B_pred)[1], tf.shape(B_pred)[2], 1])
     alpha = tf.tile(alpha, [1, 1, 1, 3])
-    with tf.variable_scope("Hallucination_Net"):
+    with tf.compat.v1.variable_scope("Hallucination_Net"):
         net_test, vgg16_conv_layers_test = hallucination_net.model(B_pred, ARGS.batch_size, False)
         y_predict_test = net_test.outputs
         y_predict_test = tf.nn.relu(y_predict_test)
         A_pred = (B_pred) + alpha * y_predict_test
 
     # Refinement-Net
-    with tf.variable_scope("Refinement_Net"):
+    with tf.compat.v1.variable_scope("Refinement_Net"):
         refinement_model = Refinement_net(is_train=is_training)
         refinement_output = tf.nn.relu(refinement_model.inference(tf.concat([A_pred, B_pred, C_pred], -1)))
 
