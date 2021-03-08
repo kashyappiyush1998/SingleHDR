@@ -2,7 +2,7 @@ from .net import BaseNet, AggNet
 # import tensorflow.compat.v1 as tf
 # tf.disable_v2_behavior()
 import tf_slim as slim
-# import tensorflow as tf
+import tensorflow as tf
 import numpy as np
 import os
 from .util import get_tensor_shape
