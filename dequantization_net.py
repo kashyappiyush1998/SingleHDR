@@ -31,8 +31,8 @@ class Dequantization_net(object):
 
     def _build_model(self, input_images):
         print(input_images.get_shape().as_list())
-        x = tf.nn.leaky_relu(tf.layers.conv2d(input_images, 16, 7, 1, 'same'), 0.1)
-        s1 = tf.nn.leaky_relu(tf.layers.conv2d(x, 16, 7, 1, 'same'), 0.1)
+        x = tf.nn.leaky_relu(tf.compat.v1.layers.conv2d(input_images, 16, 7, 1, 'same'), 0.1)
+        s1 = tf.nn.leaky_relu(tf.compat.v1.layers.conv2d(x, 16, 7, 1, 'same'), 0.1)
         s2 = self.down(s1, 32, 5)
         s3 = self.down(s2, 64, 3)
         s4 = self.down(s3, 128, 3)
