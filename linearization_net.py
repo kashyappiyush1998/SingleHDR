@@ -166,7 +166,7 @@ class CrfFeatureNet(BaseNet):
 
         res3b_relu = tf.nn.relu(res3a_relu + bn3b_branch2c)
         pool5 = self.avg_pool(res3b_relu, 7, 7, 1, 1, padding='VALID', name='pool5')
-        # fc11      = self.fc(tf.contrib.layers.flatten(pool5), 11, relu=False, name='fc11')
+        # fc11      = self.fc(tf.contrtf.compat.v1.layers.flatten(pool5), 11, relu=False, name='fc11')
 
         return tf.reduce_mean(res3b_relu, [1, 2], keepdims=False)
 
@@ -353,8 +353,8 @@ class AEInvcrfDecodeNet(BaseNet):
             return invcrf
 
         for c in self.decode_spec:
-            x = tf.layers.dense(x, c, activation=self.act, kernel_regularizer=self.reg)
-        x = tf.layers.dense(x, self.n_p - 1)  # [b, n_p - 1]
+            x = tf.compat.v1.layers.dense(x, c, activation=self.act, kernel_regularizer=self.reg)
+        x = tf.compat.v1.layers.dense(x, self.n_p - 1)  # [b, n_p - 1]
         invcrf = invcrf_pca_w_2_invcrf(x)
         # x = tf.concat([x, 1.0 - tf.reduce_sum(x, axis=-1, keep_dims=True)], -1) # [b, n_p]
         # x = self._f(x) # [b, s]
@@ -449,7 +449,7 @@ class Linearization_net(AggNet):
                 tmp_list.append(histo)
             histogram_tensor = tf.concat(tmp_list, -1)
             return histogram_tensor
-            # histogram_tensor = tf.layers.average_pooling2d(histogram_tensor, 16, 1, 'same')
+            # histogram_tensor = tf.compat.v1.layers.average_pooling2d(histogram_tensor, 16, 1, 'same')
 
         feature = self.crf_feature_net.get_output(
             tf.concat([img, edge_1, histogram_layer(img, 4), histogram_layer(img, 8), histogram_layer(img, 16)], -1),
