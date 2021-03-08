@@ -47,7 +47,7 @@ def scalar_multiplication(x):
 # The HDR reconstruction autoencoder fully convolutional neural network
 def model(x, batch_size=1, is_training=False):
     # Encoder network (VGG16, until pool5)
-    sca = tf.function(scalar_multiplication(x))
+    sca = tf.function(lambda: scalar_multiplication(x))
     net_in = tl.layers.Input(sca, name='input_layer')
     conv_layers, skip_layers = encoder(net_in)
 
