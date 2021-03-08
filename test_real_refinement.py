@@ -44,7 +44,7 @@ def build_graph(
     B_pred = apply_rf(C_pred, pred_invcrf)
 
     thr = 0.12
-    alpha = tf.reduce_max(B_pred, reduction_indices=[3])
+    alpha = tf.compat.v1.reduce_max(B_pred, reduction_indices=[3])
     alpha = tf.minimum(1.0, tf.maximum(0.0, alpha - 1.0 + thr) / thr)
     alpha = tf.reshape(alpha, [-1, tf.shape(B_pred)[1], tf.shape(B_pred)[2], 1])
     alpha = tf.tile(alpha, [1, 1, 1, 3])
