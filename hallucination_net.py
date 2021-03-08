@@ -40,15 +40,14 @@ import tensorflow as tf
 import tensorlayer as tl
 import numpy as np
 
-@tf.function
 def scalar_multiplication(x):
-    return tf.math.scalar_mul(255.0, x)
+    return tf.scalar_mul(255.0, x)
 
 # The HDR reconstruction autoencoder fully convolutional neural network
 def model(x, batch_size=1, is_training=False):
     # Encoder network (VGG16, until pool5)
-    
-    net_in = tl.layers.Input(scalar_multiplication(x), name='input_layer')
+    sca = tf.function(scalar_multiplication)
+    net_in = tl.layers.Input(sca(x), name='input_layer')
     conv_layers, skip_layers = encoder(net_in)
 
     # Fully convolutional layers on top of VGG16 conv layers
