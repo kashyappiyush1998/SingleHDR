@@ -1,9 +1,9 @@
-from net import BaseNet, AggNet
+from .net import BaseNet, AggNet
 import tensorflow.contrib.slim as slim
 import tensorflow as tf
 import numpy as np
 import os
-from util import get_tensor_shape
+from .util import get_tensor_shape
 
 class CrfFeatureNet(BaseNet):
     def __init__(
