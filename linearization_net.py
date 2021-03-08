@@ -240,7 +240,7 @@ class AEInvcrfDecodeNet(BaseNet):
         self.s = 1024
         self.n_p = 12
         self.act = tf.nn.tanh
-        self.reg = tf.contrib.layers.l2_regularizer(1e-3)
+        self.reg = tf.keras.regularizers.l2(1e-3)
 
         return
 
