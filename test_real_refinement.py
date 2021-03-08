@@ -4,10 +4,10 @@ logging.basicConfig(level=logging.INFO)
 import argparse
 import os
 import tensorflow as tf
-from dequantization_net import Dequantization_net
-from linearization_net import Linearization_net
+from .dequantization_net import Dequantization_net
+from .linearization_net import Linearization_net
 import hallucination_net
-from refinement_net import Refinement_net
+from .refinement_net import Refinement_net
 from util import apply_rf
 import numpy as np
 import cv2
