@@ -26,7 +26,7 @@ class BaseNet(Net):
     
     def __init__(self, scope):
         self.scope = scope
-        self._template = tf.make_template(
+        self._template = tf.compat.v1.make_template(
             self.scope,
             self._get_output,
         )
