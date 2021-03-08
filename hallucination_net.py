@@ -40,9 +40,9 @@ import tensorflow as tf
 import tensorlayer as tl
 import numpy as np
 
+tf.compat.v1.disable_eager_execution()
 
 # The HDR reconstruction autoencoder fully convolutional neural network
-@tf.function
 def model(x, batch_size=1, is_training=False):
     # Encoder network (VGG16, until pool5)
     x_in = tf.scalar_mul(255.0, x)
