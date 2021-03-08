@@ -315,7 +315,7 @@ class AEInvcrfDecodeNet(BaseNet):
         # [1024], [1024], [1024, 11]
         def parse_invemor():
 
-            with open(os.path.join('invemor.txt'), 'r') as f:
+            with open(os.path.join('/home/azureuser/imagewizard/SingleHDR/invemor.txt'), 'r') as f:
                 lines = f.readlines()
                 lines = [line.strip() for line in lines]
 
