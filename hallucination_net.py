@@ -45,18 +45,18 @@ import numpy as np
 def model(x, batch_size=1, is_training=False):
     # Encoder network (VGG16, until pool5)
     x_in = tf.scalar_mul(255.0, x)
-    net_in = tl.layers.InputLayer(x_in, name='input_layer')
+    net_in = tl.layers.Input(x_in, name='input_layer')
     conv_layers, skip_layers = encoder(net_in)
 
     # Fully convolutional layers on top of VGG16 conv layers
-    network = tl.layers.Conv2dLayer(conv_layers,
+    network = tl.layers.Conv2d(conv_layers,
                                     act=tf.identity,
                                     shape=[3, 3, 512, 512],
                                     strides=[1, 1, 1, 1],
                                     padding='SAME',
                                     name='encoder/h6/conv')
     #network = tf.layers.batch_normalization(network, training=is_training, name='encoder/h6/batch_norm')
-    network = tl.layers.BatchNormLayer(network, is_train=is_training, name='encoder/h6/batch_norm')
+    network = tl.layers.BatchNorm(network, is_train=is_training, name='encoder/h6/batch_norm')
     network.outputs = tf.nn.relu(network.outputs, name='encoder/h6/relu')
 
     # Decoder network
@@ -171,7 +171,7 @@ def decoder(input_layer, skip_layers, batch_size=1, is_training=False):
                                     name='decoder/h7/conv2d')
 
     # Final skip-connection
-    network = tl.layers.BatchNormLayer(network, is_train=is_training, name='decoder/h7/batch_norm')
+    network = tl.layers.BatchNorm(network, is_train=is_training, name='decoder/h7/batch_norm')
     network.outputs = tf.maximum(alpha * network.outputs, network.outputs, name='decoder/h7/leaky_relu')
     network = skip_connection_layer(network, skip_layers[0], 'decoder/h7/fuse_skip_connection')
 
@@ -205,7 +205,7 @@ def load_vgg_weights(network, weight_file, session):
 
 # Convolutional layer
 def conv_layer(input_layer, sz, str):
-    network = tl.layers.Conv2dLayer(input_layer,
+    network = tl.layers.Conv2d(input_layer,
                                     act=tf.nn.relu,
                                     shape=[3, 3, sz[0], sz[1]],
                                     strides=[1, 1, 1, 1],
@@ -246,10 +246,10 @@ def skip_connection_layer(input_layer, skip_layer, str, is_training=False):
     add_init = tf.constant_initializer(value=weights, dtype=tf.float32)
 
     # concatenate layers
-    network = tl.layers.ConcatLayer([input_layer, skip_layer], concat_dim=3, name='%s/skip_connection' % str)
+    network = tl.layers.Concat([input_layer, skip_layer], concat_dim=3, name='%s/skip_connection' % str)
 
     # fuse concatenated layers using the specified weights for initialization
-    network = tl.layers.Conv2dLayer(network,
+    network = tl.layers.Conv2d(network,
                                     act=tf.identity,
                                     shape=[1, 1, sf + sf_, sf],
                                     strides=[1, 1, 1, 1],
@@ -269,10 +269,10 @@ def deconv_layer(input_layer, sz, str, alpha, is_training=False):
     num_in_channels = int(sz[3])
     num_out_channels = int(sz[4])
 
-    network = tl.layers.UpSampling2dLayer(input_layer, (scale, scale), True, 1, False, '%s/NN_dc' % str)
+    network = tl.layers.UpSampling2d(input_layer, (scale, scale), True, 1, False, '%s/NN_dc' % str)
     network = tl.layers.PadLayer(network, [[0, 0], [1, 1], [1, 1], [0, 0]], "REFLECT", name='inpad')
     # network = conv_layer(network, [num_in_channels, num_out_channels], str)
-    network = tl.layers.Conv2dLayer(network,
+    network = tl.layers.Conv2d(network,
                                     act=tf.nn.relu,
                                     shape=[3, 3, num_in_channels, num_out_channels],
                                     strides=[1, 1, 1, 1],
@@ -306,7 +306,7 @@ def deconv_layer(input_layer, sz, str, alpha, is_training=False):
     #                                   name=str)"""
     # network = tl.layers.DeConv2d(input_layer, num_out_channels, (filter_size, filter_size), (scale, scale), 'SAME', tf.identity, W_init=init_matrix, name=str)
 
-    network = tl.layers.BatchNormLayer(network, is_train=is_training, name='%s/batch_norm_dc' % str)
+    network = tl.layers.BatchNorm(network, is_train=is_training, name='%s/batch_norm_dc' % str)
     network.outputs = tf.maximum(alpha * network.outputs, network.outputs, name='%s/leaky_relu_dc' % str)
 
 
