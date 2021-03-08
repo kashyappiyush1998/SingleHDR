@@ -40,6 +40,7 @@ import tensorflow as tf
 import tensorlayer as tl
 import numpy as np
 
+@tf.function
 def scalar_multiplication(x):
     return tf.scalar_mul(255.0, x)
 
