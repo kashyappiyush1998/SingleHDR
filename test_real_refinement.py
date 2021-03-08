@@ -4,6 +4,8 @@ logging.basicConfig(level=logging.INFO)
 import argparse
 import os
 import tensorflow as tf
+tf.compat.v1.disable_eager_execution()
+
 from .dequantization_net import Dequantization_net
 from .linearization_net import Linearization_net
 from .hallucination_net import *
